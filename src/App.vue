@@ -1,12 +1,18 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import PMT from './utils/PMT'
+import { fetchLoanPurposes, fetchRequestedPaymentPeriods, fetchRequestedTermMonths } from './fetchers'
 
 const error = ref('')
+const isLoadingConfig = ref(false)
 const isValid = ref(false)
 const loanAmount = ref(0)
 const repaymentAmountPerPeriod = ref(0)
 const totalRepayments = ref(0)
+
+const possibleLoanPurposes = ref([])
+const possibleRepaymentPeriods = ref([])
+const possibleTermMonths = ref([])
 
 function recalc (principal) {
   const countPeriods = 24 // TODO
@@ -37,6 +43,33 @@ function clear () {
   totalRepayments.value = 0
 }
 
+async function fetchConfig () {
+  try {
+    isLoadingConfig.value = true
+
+    const [
+      loanPurposes,
+      repaymentPeriods,
+      termMonths,
+    ] = await Promise.all(
+      [
+        fetchLoanPurposes(),
+        fetchRequestedPaymentPeriods(),
+        fetchRequestedTermMonths(),
+      ]
+    )
+
+    possibleLoanPurposes.value = loanPurposes
+    possibleRepaymentPeriods.value = repaymentPeriods
+    possibleTermMonths.value = termMonths
+  } catch (err) {
+    console.error(err.message)
+    error.value = 'There was an error loading the configuration. Please reload or try again later'
+  } finally {
+    isLoadingConfig.value = false
+  }
+}
+
 watch(loanAmount, (newValue) => {
   clear()
   if (isNaN(Number(newValue))) {
@@ -47,6 +80,12 @@ watch(loanAmount, (newValue) => {
     recalc(newValue)
   }
 })
+
+// Call the fetch function when component mounts
+onMounted(() => {
+  fetchConfig()
+})
+
 </script>
 
 <template>
@@ -62,6 +101,12 @@ watch(loanAmount, (newValue) => {
       type="text"
     >
   </div>
+
+  <pre>
+    {{ possibleLoanPurposes }}
+    {{ possibleRepaymentPeriods }}
+    {{ possibleTermMonths }}
+  </pre>
 
   <div
     v-if="error"

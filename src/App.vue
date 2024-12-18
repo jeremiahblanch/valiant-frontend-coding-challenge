@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import PMT from './utils/PMT'
 import { fetchLoanPurposes, fetchRequestedPaymentPeriods, fetchRequestedTermMonths } from './fetchers'
 import SelectComponent from './components/SelectComponent.vue'
@@ -15,29 +15,41 @@ const possibleLoanPurposes = ref([])
 const possibleRepaymentPeriods = ref([])
 const possibleTermMonths = ref([])
 
-const chosenLoanPurpose = ref()
-const chosenRepaymentPeriod = ref()
-const chosenTermMonths = ref()
+const chosenLoanPurposeValue = ref()
+const chosenRepaymentPeriodValue = ref()
+const chosenTermMonthsValue = ref()
 
-function recalc (principal) {
-  const countPeriods = 24 // TODO
-  const periodsPerYear = 12 // TODO
-  const ratePerTerm = 0.07 / periodsPerYear // TODO
+/// Computed
+const chosenLoanPurpose = computed(() => possibleLoanPurposes.value.find(({ value }) => value === chosenLoanPurposeValue.value))
 
-  const result = PMT(
-    ratePerTerm,
-    countPeriods,
-    principal
-  )
+function recalc () {
+  try {
+    // TODO check vwarious error problems
+    const annualRate = chosenLoanPurpose.value.annualRate
+    const totalMonths = chosenRepaymentPeriodValue.value
+    const periodsPerYear = chosenRepaymentPeriodValue.value
 
-  isValid.value = !isNaN(result)
-  if (isValid.value) {
-    const repayment = result * -1
+    const countPeriods = totalMonths / 12 * periodsPerYear
 
-    repaymentAmountPerPeriod.value = Math.ceil(repayment)
-    totalRepayments.value = Math.ceil(repayment * countPeriods)
-  } else {
-    error.value = 'Could not calculate'
+    const ratePerTerm = annualRate / periodsPerYear
+
+    const result = PMT(
+      ratePerTerm,
+      countPeriods,
+      loanAmount.value
+    )
+
+    isValid.value = !isNaN(result)
+    if (isValid.value) {
+      const repayment = result * -1
+
+      repaymentAmountPerPeriod.value = Math.ceil(repayment)
+      totalRepayments.value = Math.ceil(repayment * countPeriods)
+    } else {
+      error.value = 'Could not calculate'
+    }
+  } catch (err) {
+    error.value = `Could not calculate: ${err.message}`
   }
 }
 
@@ -75,18 +87,26 @@ async function fetchConfig () {
   }
 }
 
+/// Watchers
 watch(loanAmount, (newValue) => {
   clear()
-  if (isNaN(Number(newValue))) {
-    error.value = 'Please enter a number'
+  if (isNaN(Number(newValue)) || newValue < 1000 || newValue > 20000000) {
+    error.value = 'Please enter a number between 1,000 and 20,000,000'
     isValid.value = false
+    return
   }
-  if (newValue > 1000) {
-    recalc(newValue)
+
+  recalc(newValue)
+})
+
+watch([chosenLoanPurposeValue, chosenRepaymentPeriodValue, chosenRepaymentPeriodValue], (newValues) => {
+  clear()
+  if (newValues.every(v => !!v)) {
+    recalc()
   }
 })
 
-// Call the fetch function when component mounts
+// Lifecycle Hooks
 onMounted(() => {
   fetchConfig()
 })
@@ -112,25 +132,17 @@ onMounted(() => {
   </div>
   <div v-else>
     <SelectComponent
-      v-model="chosenLoanPurpose"
+      v-model="chosenLoanPurposeValue"
       :options="possibleLoanPurposes"
     />
     <SelectComponent
-      v-model="chosenTermMonths"
+      v-model="chosenTermMonthsValue"
       :options="possibleTermMonths"
     />
     <SelectComponent
-      v-model="chosenRepaymentPeriod"
+      v-model="chosenRepaymentPeriodValue"
       :options="possibleRepaymentPeriods"
     />
-  </div>
-
-  <div>
-    <h3>Selected Values</h3>
-
-    {{ chosenLoanPurpose }}
-    {{ chosenTermMonths }}
-    {{ chosenRepaymentPeriod }}
   </div>
 
   <div

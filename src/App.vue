@@ -2,6 +2,7 @@
 import { onMounted, ref, watch } from 'vue'
 import PMT from './utils/PMT'
 import { fetchLoanPurposes, fetchRequestedPaymentPeriods, fetchRequestedTermMonths } from './fetchers'
+import SelectComponent from './components/SelectComponent.vue'
 
 const error = ref('')
 const isLoadingConfig = ref(false)
@@ -13,6 +14,10 @@ const totalRepayments = ref(0)
 const possibleLoanPurposes = ref([])
 const possibleRepaymentPeriods = ref([])
 const possibleTermMonths = ref([])
+
+const chosenLoanPurpose = ref()
+const chosenRepaymentPeriod = ref()
+const chosenTermMonths = ref()
 
 function recalc (principal) {
   const countPeriods = 24 // TODO
@@ -102,11 +107,31 @@ onMounted(() => {
     >
   </div>
 
-  <pre>
-    {{ possibleLoanPurposes }}
-    {{ possibleRepaymentPeriods }}
-    {{ possibleTermMonths }}
-  </pre>
+  <div v-if="isLoadingConfig">
+    Fetching configuration, please wait
+  </div>
+  <div v-else>
+    <SelectComponent
+      v-model="chosenLoanPurpose"
+      :options="possibleLoanPurposes"
+    />
+    <SelectComponent
+      v-model="chosenTermMonths"
+      :options="possibleTermMonths"
+    />
+    <SelectComponent
+      v-model="chosenRepaymentPeriod"
+      :options="possibleRepaymentPeriods"
+    />
+  </div>
+
+  <div>
+    <h3>Selected Values</h3>
+
+    {{ chosenLoanPurpose }}
+    {{ chosenTermMonths }}
+    {{ chosenRepaymentPeriod }}
+  </div>
 
   <div
     v-if="error"

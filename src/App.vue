@@ -8,7 +8,7 @@ import SelectInput from './components/SelectInput.vue'
 import { useFormat } from './composables/useFormat'
 import { LOAN_AMOUNT_MAX, LOAN_AMOUNT_MIN } from './constants/loanAmountLimits'
 
-const { formatCurrency } = useFormat()
+const { formatCurrency, formatNumber } = useFormat()
 
 const error = ref('')
 const isLoadingConfig = ref(false)
@@ -100,7 +100,7 @@ async function fetchConfig () {
 watch(loanAmount, (newValue) => {
   clear()
   if (isNaN(Number(newValue))) {
-    error.value = 'Please enter a number between 1,000 and 20,000,000'
+    error.value = `Please enter an amount between ${formatNumber(LOAN_AMOUNT_MIN)} and ${formatNumber(LOAN_AMOUNT_MAX)}.`
     isValid.value = false
     return
   }

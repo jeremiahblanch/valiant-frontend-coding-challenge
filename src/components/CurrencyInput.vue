@@ -28,7 +28,7 @@ const limit = (value) => limitNumber(value, props.min, props.max)
 // store a local version of the value as a formatted string
 const innerString = ref(formatNumber(limit(props.modelValue)))
 
-// update that value when model changes
+// update the internal value when model changes
 watch(() => props.modelValue, (value) => {
   if (!isNaN(value)) {
     // if we receive NaN just ignore it, as it will be because the user is entering a value
@@ -37,7 +37,7 @@ watch(() => props.modelValue, (value) => {
 })
 
 // Event handlers
-const handleInput = (ev, wantEnforceLimit) => {
+const handleInput = (ev, wantEnforceLimit = false) => {
   let value = ev.target.value.trim() // in case this was pasted and has spaces
   value = value.startsWith('0') ? value.substring(1) : value // remove leading 0
 
@@ -59,16 +59,14 @@ const handleInput = (ev, wantEnforceLimit) => {
   }
 
   // update display
-  const displayValue = isNaN(numeric) ? '0' : formatNumber(numeric)
-  innerString.value = displayValue
+  innerString.value = isNaN(numeric) ? '0' : formatNumber(numeric)
 
-  // displayValue will have commas and other characters, depending on what formatNumber has returend
+  // innerString.value will have commas and other characters, depending on what formatNumber has returend
   // we want to make sure the caret is back at the right spot, after the character just typed
   // we stored which digit (by count) our selection was at, so count the digits and add 1 to that value
-  const newSelStart = findPositionOfNthDigit(displayValue, selStartWithinDigits) + 1
-  const newSelEnd = findPositionOfNthDigit(displayValue, selEndWithinDigits) + 1
+  const newSelStart = findPositionOfNthDigit(innerString.value, selStartWithinDigits) + 1
+  const newSelEnd = findPositionOfNthDigit(innerString.value, selEndWithinDigits) + 1
 
-  // wait for Vue to update
   nextTick().then(() => {
     ev.target.selectionStart = newSelStart
     ev.target.selectionEnd = newSelEnd
@@ -84,7 +82,7 @@ const handleKeyDown = (ev) => {
   }
 
   if (!isDigit(ev.key)) {
-    // normal key that is not a digit - prevent event
+    // non-special key that is not a digit - prevent event
     ev.preventDefault()
   }
 }

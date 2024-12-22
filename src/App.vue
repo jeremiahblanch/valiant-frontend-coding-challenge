@@ -2,18 +2,18 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import PMT from './utils/PMT'
 import { fetchLoanPurposes, fetchRequestedPaymentPeriods, fetchRequestedTermMonths } from './fetchers'
-import SelectComponent from './components/SelectInput.vue'
 import CurrencyInput from './components/CurrencyInput.vue'
 import SelectInput from './components/SelectInput.vue'
 
 import { useFormat } from './composables/useFormat'
+import { LOAN_AMOUNT_MAX, LOAN_AMOUNT_MIN } from './constants/loanAmountLimits'
 
 const { formatCurrency } = useFormat()
 
 const error = ref('')
 const isLoadingConfig = ref(false)
 const isValid = ref(false)
-const loanAmount = ref(0)
+const loanAmount = ref(LOAN_AMOUNT_MIN)
 const repaymentAmountPerPeriod = ref(0)
 const totalRepayments = ref(0)
 
@@ -140,8 +140,8 @@ onMounted(() => {
             id="loanAmountInput"
             v-model="loanAmount"
             class="w-32"
-            :min="1000"
-            :max="20000000"
+            :min="LOAN_AMOUNT_MIN"
+            :max="LOAN_AMOUNT_MAX"
           />
         </span>
         <span>for</span>
@@ -192,7 +192,6 @@ onMounted(() => {
 
               {{ formatCurrency(totalRepayments) }}
             </span>
-            <span class="text-sm" />
             Total repayments
           </p>
         </template>

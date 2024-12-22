@@ -29,10 +29,8 @@ const {
   },
 })
 
-// Define emits for v-model support
 const emit = defineEmits(['update:modelValue'])
 
-// Handle change event
 const handleChange = (event) => {
   emit('update:modelValue', event.target.value)
 }

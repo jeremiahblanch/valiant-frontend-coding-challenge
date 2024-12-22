@@ -1,9 +1,13 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import PMT from './utils/PMT'
-import { formatCurrency } from './utils/formatCurrency'
 import { fetchLoanPurposes, fetchRequestedPaymentPeriods, fetchRequestedTermMonths } from './fetchers'
 import SelectComponent from './components/SelectComponent.vue'
+import CurrencyInput from './components/CurrencyInput.vue'
+
+import { useFormat } from './composables/useFormat'
+
+const { formatCurrency } = useFormat()
 
 const error = ref('')
 const isLoadingConfig = ref(false)
@@ -25,8 +29,12 @@ const chosenLoanPurpose = computed(() => possibleLoanPurposes.value.find(({ valu
 const chosenRepaymentPeriod = computed(() => possibleRepaymentPeriods.value.find(({ value }) => chosenRepaymentPeriodValue.value === `${value}`))
 
 function recalc () {
+  if (!chosenLoanPurpose.value || !chosenRepaymentPeriod.value || !chosenTermMonthsValue.value) {
+    isValid.value = false
+    return
+  }
+
   try {
-    // TODO check vwarious error problems
     const annualRate = chosenLoanPurpose.value.annualRate
     const periodsPerYear = chosenRepaymentPeriodValue.value
     const countPeriods = chosenTermMonthsValue.value / 12 * periodsPerYear
@@ -81,7 +89,7 @@ async function fetchConfig () {
     possibleTermMonths.value = termMonths
   } catch (err) {
     console.error(err.message)
-    error.value = 'There was an error loading the configuration. Please reload or try again later'
+    error.value = 'We could not load the loan options. Please reload or try again later.'
   } finally {
     isLoadingConfig.value = false
   }
@@ -90,7 +98,7 @@ async function fetchConfig () {
 /// Watchers
 watch(loanAmount, (newValue) => {
   clear()
-  if (isNaN(Number(newValue)) || newValue < 1000 || newValue > 20000000) {
+  if (isNaN(Number(newValue))) {
     error.value = 'Please enter a number between 1,000 and 20,000,000'
     isValid.value = false
     return
@@ -115,88 +123,78 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto flex justify-center">
-    <div class="flex flex-col items-center gap-2">
-      <div
-        v-if="isLoadingConfig"
-        class="p-4 text-center"
-      >
-        Fetching configuration, please wait
+    <div class="flex flex-col items-center gap-2 py-6">
+      <div class="flex items-center gap-4 px-6">
+        <span>I need</span>
+        <span>
+
+          <label
+            class="sr-only"
+            for="loanAmountInput"
+          >
+            Loan Amount
+          </label>
+          <span>$</span>
+          <CurrencyInput
+            id="loanAmountInput"
+            v-model="loanAmount"
+            class="w-32"
+            :min="1000"
+            :max="20000000"
+          />
+        </span>
+        <span>for</span>
+        <SelectComponent
+          v-model="chosenLoanPurposeValue"
+          class="w-48"
+          :options="possibleLoanPurposes"
+        />
       </div>
-      <template v-else>
-        <div class="flex items-center gap-1 px-6">
-          <span>I need</span>
-          <span>
-            <span>$</span>
-            <label
-              class="sr-only"
-              for="loanAmountInput"
-            >
-              Loan Amount
-            </label>
-            <input
-              id="loanAmountInput"
-              v-model="loanAmount"
-              class="w-36"
-              type="text"
-            >
-          </span>
-          <span>for</span>
-          <SelectComponent
-            v-model="chosenLoanPurposeValue"
-            class="w-48"
-            :options="possibleLoanPurposes"
-          />
-        </div>
-        <div class="flex items-center gap-1 px-6">
-          <span>repaid</span>
-          <SelectComponent
-            v-model="chosenRepaymentPeriodValue"
-            class="w-48"
-            :options="possibleRepaymentPeriods"
-          />
+      <div class="flex items-center gap-4 px-6">
+        <span>repaid</span>
+        <SelectComponent
+          v-model="chosenRepaymentPeriodValue"
+          class="w-48"
+          :options="possibleRepaymentPeriods"
+        />
 
-          <span>over</span>
+        <span>over</span>
 
-          <SelectComponent
-            v-model="chosenTermMonthsValue"
-            class="w-48"
-            :options="possibleTermMonths"
-          />
-        </div>
-      </template>
-
-      <div
-        v-if="error || isValid"
-        class="my-4 w-full border-b"
-      />
-
-      <div
-        v-if="error"
-        class="text-red-500"
-      >
-        Error: {{ error }}
+        <SelectComponent
+          v-model="chosenTermMonthsValue"
+          class="w-48"
+          :options="possibleTermMonths"
+        />
       </div>
 
-      <div
-        v-else-if="isValid"
-        class="flex flex-col items-center gap-1"
-      >
-        <p class="text-center text-green-600">
-          <span class="rounded-md bg-green-50 px-2 py-0.5">
-            {{ formatCurrency(repaymentAmountPerPeriod) }}
-          </span>
-          <span class="p-1 text-sm">
-            {{ chosenRepaymentPeriod?.label }}
-            repayments
-          </span>
-        </p>
-        <p class="text-sm text-stone-500">
-          <span class="rounded-md bg-stone-50 px-2 py-0.5">
+      <div class="mt-4 flex min-h-24 w-full flex-col items-center justify-center gap-1 border-t text-center">
+        <div
+          v-if="error || isLoadingConfig"
+          class="text-sm text-stone-300"
+        >
+          {{ isLoadingConfig ? 'Please wait while we load the loan options...' : error }}
+        </div>
+        <template
+          v-else-if="isValid"
+        >
+          <p class="text-emerald-600">
+            <span class="rounded-md bg-emerald-50 px-2 py-0.5 text-lg">
+              {{ formatCurrency(repaymentAmountPerPeriod) }}
+            </span>
+            <span class="p-1">
+              {{ chosenRepaymentPeriod?.label }}
+              repayments
+            </span>
+          </p>
+          <p class="text-stone-500">
+            <span class="rounded-md bg-stone-50 px-2 py-0.5">
 
-            {{ formatCurrency(totalRepayments) }}
-          </span>
-          Total repayments
-        </p>
+              {{ formatCurrency(totalRepayments) }}
+            </span>
+            <span class="text-sm" />
+            Total repayments
+          </p>
+        </template>
       </div>
     </div>
   </div>

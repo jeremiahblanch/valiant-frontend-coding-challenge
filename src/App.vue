@@ -2,8 +2,9 @@
 import { computed, onMounted, ref, watch } from 'vue'
 import PMT from './utils/PMT'
 import { fetchLoanPurposes, fetchRequestedPaymentPeriods, fetchRequestedTermMonths } from './fetchers'
-import SelectComponent from './components/SelectComponent.vue'
+import SelectComponent from './components/SelectInput.vue'
 import CurrencyInput from './components/CurrencyInput.vue'
+import SelectInput from './components/SelectInput.vue'
 
 import { useFormat } from './composables/useFormat'
 
@@ -144,7 +145,7 @@ onMounted(() => {
           />
         </span>
         <span>for</span>
-        <SelectComponent
+        <SelectInput
           v-model="chosenLoanPurposeValue"
           class="w-48"
           :options="possibleLoanPurposes"
@@ -152,7 +153,7 @@ onMounted(() => {
       </div>
       <div class="flex items-center gap-4 px-6">
         <span>repaid</span>
-        <SelectComponent
+        <SelectInput
           v-model="chosenRepaymentPeriodValue"
           class="w-48"
           :options="possibleRepaymentPeriods"
@@ -160,7 +161,7 @@ onMounted(() => {
 
         <span>over</span>
 
-        <SelectComponent
+        <SelectInput
           v-model="chosenTermMonthsValue"
           class="w-48"
           :options="possibleTermMonths"

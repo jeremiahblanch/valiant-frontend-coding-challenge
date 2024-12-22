@@ -1,5 +1,4 @@
 <script setup>
-import { defineEmits } from 'vue'
 
 const {
   id,
@@ -15,8 +14,8 @@ const {
     required: true,
     validator: (value) => value.every(option =>
       typeof option === 'object' &&
-      'value' in option &&
-      'label' in option
+        'value' in option &&
+        'label' in option
     ),
   },
   name: {
@@ -37,21 +36,19 @@ const handleChange = (event) => {
 </script>
 
 <template>
-  <div>
-    <select
-      :id="id"
-      :name="name"
-      :value="modelValue"
-      class="block w-full rounded-md border border-stone-100 bg-stone-50/50 px-2 py-1 focus:border-emerald-500 focus:bg-white focus:shadow-sm focus:outline-none focus:ring-emerald-500"
-      @change="handleChange"
+  <select
+    :id="id"
+    :name="name"
+    :value="modelValue"
+    class="inline-block rounded-md border border-stone-100 bg-stone-50/50 px-2 py-1 focus:border-emerald-500 focus:bg-white focus:shadow-sm focus:outline-none focus:ring-emerald-500"
+    @change="handleChange"
+  >
+    <option
+      v-for="option in options"
+      :key="option.value"
+      :value="option.value"
     >
-      <option
-        v-for="option in options"
-        :key="option.value"
-        :value="option.value"
-      >
-        {{ option.label }}
-      </option>
-    </select>
-  </div>
+      {{ option.label }}
+    </option>
+  </select>
 </template>

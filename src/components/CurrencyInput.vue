@@ -3,7 +3,7 @@ import { nextTick, ref, watch } from 'vue'
 
 import { limitNumber } from '@/utils/limitNumber'
 import { countDigits, findPositionOfNthDigit, isDigit, removeNonDigits } from '@/utils/stringDigits'
-import { useFormat } from '../composables/useFormat'
+import { useFormat } from '@/composables/useFormat'
 const { formatNumber } = useFormat()
 
 const emit = defineEmits(['update:modelValue'])
@@ -61,7 +61,7 @@ const handleInput = (ev, wantEnforceLimit = false) => {
   // update display
   innerString.value = isNaN(numeric) ? '0' : formatNumber(numeric)
 
-  // innerString.value will have commas and other characters, depending on what formatNumber has returend
+  // innerString will have commas and other characters, depending on what formatNumber has returend
   // we want to make sure the caret is back at the right spot, after the character just typed
   // we stored which digit (by count) our selection was at, so count the digits and add 1 to that value
   const newSelStart = findPositionOfNthDigit(innerString.value, selStartWithinDigits) + 1

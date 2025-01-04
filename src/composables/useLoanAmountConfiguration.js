@@ -1,5 +1,6 @@
+import axios from 'axios'
 import { onMounted, ref } from 'vue'
-import { fetchLoanPurposes, fetchRequestedPaymentPeriods, fetchRequestedTermMonths } from '@/fetchers'
+import { ENDPOINT_LOAN_PURPOSES, ENDPOINT_REQUESTED_REPAYMENT_PERIODS, ENDPOINT_REQUESTED_TERM_MONTHS } from '@/constants/endpoints'
 
 export function useLoanAmountConfiguration () {
   const error = ref('')
@@ -19,9 +20,9 @@ export function useLoanAmountConfiguration () {
         termMonths,
       ] = await Promise.all(
         [
-          fetchLoanPurposes(),
-          fetchRequestedPaymentPeriods(),
-          fetchRequestedTermMonths(),
+          tryFetch(ENDPOINT_LOAN_PURPOSES),
+          tryFetch(ENDPOINT_REQUESTED_REPAYMENT_PERIODS),
+          tryFetch(ENDPOINT_REQUESTED_TERM_MONTHS),
         ]
       )
 
@@ -45,5 +46,16 @@ export function useLoanAmountConfiguration () {
     loanPurposeOptions,
     repaymentPeriodOptions,
     termMonthsOptions,
+  }
+}
+
+// Helpers
+async function tryFetch (url) {
+  try {
+    const { data } = await axios.get(url)
+
+    return data
+  } catch (err) {
+    throw new Error(`Error ${err.message} fetching ${url}`)
   }
 }

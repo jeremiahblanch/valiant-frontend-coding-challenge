@@ -76,8 +76,6 @@ const periodLabel = computed(() => {
   return chosenRepaymentPeriod?.label
 })
 
-const isDisabled = computed(() => configError && !!configError.value)
-
 </script>
 
 <template>
@@ -125,7 +123,7 @@ const isDisabled = computed(() => configError && !!configError.value)
             id="loanPurposeDropdown"
             v-model="chosenLoanPurposeValue"
             class="w-48"
-            :disabled="isDisabled"
+            :disabled="!loanPurposeOptions.length"
             :options="loanPurposeOptions"
           />
         </div>
@@ -149,7 +147,7 @@ const isDisabled = computed(() => configError && !!configError.value)
             id="repaymentPeriodDropdown"
             v-model="chosenRepaymentPeriodValue"
             class="w-48"
-            :disabled="isDisabled"
+            :disabled="!repaymentPeriodOptions.length"
             :options="repaymentPeriodOptions"
           />
         </div>
@@ -172,7 +170,7 @@ const isDisabled = computed(() => configError && !!configError.value)
             id="termDropdown"
             v-model="chosenTermMonthsValue"
             class="w-48"
-            :disabled="isDisabled"
+            :disabled="!termMonthsOptions.length"
             :options="termMonthsOptions"
           />
         </div>

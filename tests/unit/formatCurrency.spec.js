@@ -1,5 +1,4 @@
-import { expect, test } from 'vitest'
-import { formatCurrency } from '@/utils/formatCurrency.js'
+import { formatCurrency } from '@/utils/formatCurrency'
 
 describe('formatCurrency', () => {
   const cases = [
@@ -13,10 +12,11 @@ describe('formatCurrency', () => {
     // other locales
     { currency: 'AUD', locale: 'en-GB', value: 0, round: false, expected: '$0.00' }, // ensure we don't see $A
     { currency: 'AUD', locale: 'en-US', value: 0, round: false, expected: '$0.00' }, // ensure we don't see $A
-    // TODO - more complete other locales tests
+
+    // TODO - more complete cases for other locales
   ]
 
-  test.each(cases)('%# given value: $value, currency: $currency, locale: $locale, round: $round, returns $expected', ({
+  it.each(cases)('%# given value: $value, currency: $currency, locale: $locale, round: $round, returns $expected', ({
     currency,
     locale,
     value,

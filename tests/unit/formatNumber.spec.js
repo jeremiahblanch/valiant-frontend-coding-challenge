@@ -1,8 +1,6 @@
-import { expect, test } from 'vitest'
-import { formatNumber } from '@/utils/formatNumber.js'
+import { formatNumber } from '@/utils/formatNumber'
 
 describe('formatNumber', () => {
-  // TODO - tests for other locales
   const cases = [
     { locale: 'en-AU', value: 0, round: false, expected: '0' },
     { locale: 'en-AU', value: 0, round: true, expected: '0' },
@@ -10,9 +8,11 @@ describe('formatNumber', () => {
     { locale: 'en-AU', value: 123.45, round: true, expected: '123' },
     { locale: 'en-AU', value: 12345.67, round: false, expected: '12,345.67' },
     { locale: 'en-AU', value: 12345.67, round: true, expected: '12,346' },
+
+    // TODO - other locales
   ]
 
-  test.each(cases)('%# given value: $value, locale: $locale, round: $round, return $expected', ({
+  it.each(cases)('%# given value: $value, locale: $locale, round: $round, return $expected', ({
     locale,
     value,
     round,

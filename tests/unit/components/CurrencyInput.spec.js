@@ -2,13 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent } from 'vue'
 import CurrencyInput from '@/components/CurrencyInput.vue'
-import { formatNumber as _formatNumber } from '@/utils/formatNumber'
+import { formatNumber } from '@/utils/formatNumber'
 
-const formatNumber = (value) => _formatNumber(value, { locale: 'en-AU', currency: 'AUD', round: true })
+const formatNumberCurrencyAU = (value) => formatNumber(value, { locale: 'en-AU', currency: 'AUD', round: true })
 
 vi.mock('@/composables/useFormat', () => ({
   useFormat: () => ({
-    formatNumber,
+    formatNumber: formatNumberCurrencyAU,
   }),
 }))
 
@@ -31,12 +31,12 @@ describe('CurrencyInput', () => {
 
   it('formats numbers according to locale', async () => {
     await comp.setProps({ modelValue: 1000 })
-    expect(input.element.value).toBe(formatNumber(1000))
+    expect(input.element.value).toBe(formatNumberCurrencyAU(1000))
   })
 
   it('removes leading zeros', async () => {
     await input.setValue('0099')
-    expect(input.element.value).toBe(formatNumber(99))
+    expect(input.element.value).toBe(formatNumberCurrencyAU(99))
   })
 
   it('emits update:modelValue when input changes', async () => {
@@ -143,9 +143,5 @@ describe('CurrencyInput', () => {
     })
   })
 
-  describe('cursor position handling', () => {
-    it('maintains cursor position after formatting', async () => {
-      // TODO
-    })
-  })
+  // TODO - tests for cursor position handling
 })

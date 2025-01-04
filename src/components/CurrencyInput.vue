@@ -91,7 +91,6 @@ const handleKeyDown = (ev) => {
 <template>
   <input
     type="text"
-    class="inline-block border-b-2 border-dashed border-b-emerald-500 px-2 py-1 text-center text-lg font-bold tracking-wide text-emerald-600 focus:text-emerald-700 focus:outline-none"
     :value="innerString"
     @blur="(ev) => handleInput(ev, true)"
     @focus="handleInput"

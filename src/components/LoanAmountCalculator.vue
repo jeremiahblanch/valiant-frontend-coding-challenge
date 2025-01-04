@@ -97,7 +97,7 @@ const periodLabel = computed(() => {
             <CurrencyInput
               id="loanAmountInput"
               v-model="loanAmount"
-              class="w-44 sm:w-32"
+              class="inline-block w-44 border-b-2 border-dashed border-b-emerald-500 px-2 py-1 text-center text-lg font-bold tracking-wide text-emerald-600 focus:border-b-emerald-700 focus:text-emerald-700 focus:outline-none sm:w-32"
               :min="props.loanAmountMin"
               :max="props.loanAmountMax"
             />
@@ -185,8 +185,8 @@ const periodLabel = computed(() => {
         </div>
 
         <template v-else>
-          <p class="text-emerald-600">
-            <span class="text-lg">
+          <p class="text-lg text-emerald-600">
+            <span class="text-xl font-medium tracking-wide">
               {{ formatCurrency(calculation.repaymentPerPeriod) }}
             </span>
             <span class="p-1">
@@ -195,7 +195,7 @@ const periodLabel = computed(() => {
             </span>
           </p>
           <p class="text-stone-500">
-            <span class="">
+            <span class="font-medium tracking-wide">
 
               {{ formatCurrency(calculation.totalRepayments) }}
             </span>

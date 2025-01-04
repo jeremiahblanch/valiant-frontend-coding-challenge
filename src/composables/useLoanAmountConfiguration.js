@@ -49,7 +49,6 @@ export function useLoanAmountConfiguration () {
   }
 }
 
-// Helpers
 async function tryFetch (url) {
   try {
     const { data } = await axios.get(url)

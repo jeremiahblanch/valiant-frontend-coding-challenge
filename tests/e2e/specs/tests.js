@@ -18,10 +18,10 @@ describe('LoanRepaymentCalculator', () => {
   })
 
   it('gets a valid result when we pick the first option of each dropdown', () => {
-    cy.get('#loanPurposeDropdown').select(0)
-    cy.get('#repaymentPeriodDropdown').select(0)
-    cy.get('#termDropdown').select(0)
-    cy.get('[data-test-id="result"]').contains('Total repayments', {
+    cy.getBySel('loan-purpose-dropdown').select(0)
+    cy.getBySel('repayment-period-dropdown').select(0)
+    cy.getBySel('term-dropdown').select(0)
+    cy.getBySel('result').contains('Total repayments', {
       matchCase: false,
     })
   })
@@ -32,10 +32,10 @@ describe('LoanRepaymentCalculator', () => {
       repaymentPeriods.forEach((rp) => {
         termMonths.forEach((tm) => {
           it(`gets the correct result for $${amount}, ${lp.label}, ${rp.label}, ${tm.label}`, () => {
-            cy.get('#loanAmountInput').type(`{selectAll}{del}${amount}`)
-            cy.get('#loanPurposeDropdown').select(lp.label)
-            cy.get('#repaymentPeriodDropdown').select(rp.label)
-            cy.get('#termDropdown').select(tm.label)
+            cy.getBySel('loan-amount-input').type(`{selectAll}{del}${amount}`)
+            cy.getBySel('loan-purpose-dropdown').select(lp.label)
+            cy.getBySel('repayment-period-dropdown').select(rp.label)
+            cy.getBySel('term-dropdown').select(tm.label)
 
             const { eachRepayment, totalRepayments } = getExpectedRepaymentAndTotalValues(
               {
@@ -46,12 +46,12 @@ describe('LoanRepaymentCalculator', () => {
               }
             )
 
-            cy.extractNumber('[data-test-id="eachRepayment"]').should(
+            cy.getBySel('each-repayment').extractNumber().should(
               'eq',
               eachRepayment
             )
 
-            cy.extractNumber('[data-test-id="repaymentsTotal"]').should(
+            cy.getBySel('total-repayments').extractNumber().should(
               'eq',
               totalRepayments
             )

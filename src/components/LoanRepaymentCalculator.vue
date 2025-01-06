@@ -99,6 +99,7 @@ const periodLabel = computed(() => {
             <CurrencyInput
               id="loanAmountInput"
               v-model="loanAmount"
+              data-testid="loan-amount-input"
               class="inline-block w-44 border-b-2 border-dashed border-b-emerald-500 px-2 py-1 text-center text-lg font-bold tracking-wide text-emerald-600 focus:border-b-emerald-700 focus:text-emerald-700 focus:outline-none sm:w-32"
               :min="props.loanAmountMin"
               :max="props.loanAmountMax"
@@ -124,6 +125,7 @@ const periodLabel = computed(() => {
             v-else
             id="loanPurposeDropdown"
             v-model="chosenLoanPurposeValue"
+            data-testid="loan-purpose-dropdown"
             class="w-48"
             :disabled="!loanPurposeOptions.length"
             :options="loanPurposeOptions"
@@ -148,6 +150,7 @@ const periodLabel = computed(() => {
             v-else
             id="repaymentPeriodDropdown"
             v-model="chosenRepaymentPeriodValue"
+            data-testid="repayment-period-dropdown"
             class="w-48"
             :disabled="!repaymentPeriodOptions.length"
             :options="repaymentPeriodOptions"
@@ -171,6 +174,7 @@ const periodLabel = computed(() => {
             v-else
             id="termDropdown"
             v-model="chosenTermMonthsValue"
+            data-testid="term-dropdown"
             class="w-48"
             :disabled="!termMonthsOptions.length"
             :options="termMonthsOptions"
@@ -180,7 +184,7 @@ const periodLabel = computed(() => {
 
       <div
         class="mt-4 flex min-h-24 w-full flex-col items-center justify-center gap-1 border-t px-6 text-center"
-        data-test-id="result"
+        data-testid="result"
       >
         <div
           v-if="isLoadingConfig || configError || calculation.error"
@@ -193,7 +197,7 @@ const periodLabel = computed(() => {
           <p class="text-lg text-emerald-600">
             <span
               class="text-xl font-medium tracking-wide"
-              data-test-id="eachRepayment"
+              data-testid="each-repayment"
             >
               {{ formatCurrency(calculation.eachRepayment) }}
             </span>
@@ -205,7 +209,7 @@ const periodLabel = computed(() => {
           <p class="text-stone-500">
             <span
               class="font-medium tracking-wide"
-              data-test-id="totalRepayments"
+              data-testid="total-repayments"
             >
 
               {{ formatCurrency(calculation.totalRepayments) }}

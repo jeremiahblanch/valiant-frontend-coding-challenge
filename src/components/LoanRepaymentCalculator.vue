@@ -11,7 +11,7 @@ import { useLoanRepaymentCalculatorConfiguration } from '@/composables/useLoanRe
 import PMT from '@/utils/PMT'
 
 const styles = {
-  fieldRow: 'grid w-full grid-cols-[6rem_1fr] items-center gap-4 sm:flex sm:w-auto',
+  fieldRow: 'grid w-full grid-cols-[5rem_1fr] items-center gap-4 sm:flex sm:w-auto',
 }
 
 const props = defineProps({

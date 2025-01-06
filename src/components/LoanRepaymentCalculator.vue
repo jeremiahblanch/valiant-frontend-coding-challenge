@@ -100,7 +100,7 @@ const periodLabel = computed(() => {
               id="loanAmountInput"
               v-model="loanAmount"
               data-testid="loan-amount-input"
-              class="inline-block w-44 border-b-2 border-dashed border-b-emerald-500 px-2 py-1 text-center text-lg font-bold tracking-wide text-emerald-600 focus:border-b-emerald-700 focus:text-emerald-700 focus:outline-none sm:w-32"
+              class="w-44 sm:w-32"
               :min="props.loanAmountMin"
               :max="props.loanAmountMax"
             />

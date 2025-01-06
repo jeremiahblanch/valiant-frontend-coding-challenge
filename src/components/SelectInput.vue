@@ -29,18 +29,16 @@ const {
 })
 
 const emit = defineEmits(['update:modelValue'])
+const handleChange = (event) => emit('update:modelValue', event.target.value)
 
-const handleChange = (event) => {
-  emit('update:modelValue', event.target.value)
-}
 </script>
 
 <template>
   <select
     :id="id"
+    class="inline-block h-8 rounded-md border border-stone-100 bg-stone-50/50 px-2 py-1 focus:border-emerald-500 focus:bg-white focus:shadow-sm focus:outline-none focus:ring-emerald-500"
     :name="name"
     :value="modelValue"
-    class="inline-block h-8 rounded-md border border-stone-100 bg-stone-50/50 px-2 py-1 focus:border-emerald-500 focus:bg-white focus:shadow-sm focus:outline-none focus:ring-emerald-500"
     @change="handleChange"
   >
     <option

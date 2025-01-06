@@ -42,7 +42,7 @@ const chosenTermMonthsValue = ref()
 const calculation = computed(() => {
   if (isNaN(Number(loanAmount.value))) {
     return {
-      error: `Please enter an amount between ${formatNumber(props.loanAmountMin)} and ${formatNumber(props.loanAmountMax)}.`,
+      error: `This calculator works with amounts between ${formatNumber(props.loanAmountMin)} and ${formatNumber(props.loanAmountMax)}. Your value will be adjusted to these limits.`,
     }
   }
 

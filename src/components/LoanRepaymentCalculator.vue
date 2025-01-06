@@ -83,7 +83,7 @@ const periodLabel = computed(() => {
 <template>
   <div class="mx-auto flex max-w-xl justify-center">
     <div class="flex flex-col items-center gap-2 py-6">
-      <div class="flex flex-col items-center gap-4 sm:flex-row sm:flex-wrap sm:justify-center sm:px-6">
+      <div class="flex flex-col items-center gap-4 font-medium text-stone-700 sm:flex-row sm:flex-wrap sm:justify-center sm:px-6">
         <div :class="styles.fieldRow">
           <label for="loanAmountInput">
             <span aria-hidden="true">
@@ -95,12 +95,12 @@ const periodLabel = computed(() => {
           </label>
 
           <span>
-            <span>$</span>
+            <span class="text-xl font-bold text-cyan-500">$</span>
             <CurrencyInput
               id="loanAmountInput"
               v-model="loanAmount"
               data-testid="loan-amount-input"
-              class="w-44 sm:w-32"
+              class="w-44 sm:w-44"
               :min="props.loanAmountMin"
               :max="props.loanAmountMax"
             />
@@ -183,7 +183,7 @@ const periodLabel = computed(() => {
       </div>
 
       <div
-        class="mt-4 flex min-h-24 w-full flex-col items-center justify-center gap-1 border-t px-6 text-center"
+        class="mt-4 flex min-h-24 w-full flex-col items-center justify-center gap-2 border-t px-6 text-center"
         data-testid="result"
       >
         <div
@@ -194,9 +194,9 @@ const periodLabel = computed(() => {
         </div>
 
         <template v-else>
-          <p class="text-lg text-emerald-600">
+          <p class="text-xl text-emerald-600">
             <span
-              class="text-xl font-medium tracking-wide"
+              class="text-xl font-semibold tracking-wide"
               data-testid="each-repayment"
             >
               {{ formatCurrency(calculation.eachRepayment) }}
@@ -206,9 +206,9 @@ const periodLabel = computed(() => {
               repayments
             </span>
           </p>
-          <p class="text-stone-500">
+          <p class="text-lg text-stone-500">
             <span
-              class="font-medium tracking-wide"
+              class="font-semibold tracking-wide"
               data-testid="total-repayments"
             >
 

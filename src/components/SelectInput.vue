@@ -36,7 +36,7 @@ const handleChange = (event) => emit('update:modelValue', event.target.value)
 <template>
   <select
     :id="id"
-    class="inline-block h-8 rounded-md border border-stone-100 bg-stone-50/50 px-2 py-1 focus:border-emerald-500 focus:bg-white focus:shadow-sm focus:outline-none focus:ring-emerald-500"
+    class="inline-block h-8 rounded-md border border-stone-100 bg-stone-50/50 px-2 py-1 focus:border-cyan-500 focus:bg-white focus:shadow-sm focus:outline-none focus:ring-cyan-500"
     :name="name"
     :value="modelValue"
     @change="handleChange"

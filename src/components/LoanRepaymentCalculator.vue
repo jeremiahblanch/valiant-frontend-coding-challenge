@@ -1,25 +1,18 @@
 <script setup>
 import { computed, ref } from 'vue'
+
 import CurrencyInput from '@/components/CurrencyInput.vue'
 import SelectInput from '@/components/SelectInput.vue'
+import SelectInputSkeleton from '@/components/SelectInputSkeleton.vue'
 
 import { useFormat } from '@/composables/useFormat'
 import { useLoanRepaymentCalculatorConfiguration } from '@/composables/useLoanRepaymentCalculatorConfiguration'
+
 import PMT from '@/utils/PMT'
-import SelectInputSkeleton from './SelectInputSkeleton.vue'
 
 const styles = {
   fieldRow: 'grid w-full grid-cols-[6rem_1fr] items-center gap-4 sm:flex sm:w-auto',
 }
-
-const { formatCurrency, formatNumber } = useFormat()
-const {
-  error: configError,
-  isLoading: isLoadingConfig,
-  loanPurposeOptions,
-  repaymentPeriodOptions,
-  termMonthsOptions,
-} = useLoanRepaymentCalculatorConfiguration()
 
 const props = defineProps({
   loanAmountMax: {
@@ -31,6 +24,15 @@ const props = defineProps({
     required: true,
   },
 })
+
+const { formatCurrency, formatNumber } = useFormat()
+const {
+  error: configError,
+  isLoading: isLoadingConfig,
+  loanPurposeOptions,
+  repaymentPeriodOptions,
+  termMonthsOptions,
+} = useLoanRepaymentCalculatorConfiguration()
 
 // User input values
 const loanAmount = ref(props.loanAmountMin)
@@ -56,17 +58,17 @@ const calculation = computed(() => {
   const periodsPerYear = Number(chosenRepaymentPeriodValue.value)
   const totalPeriods = chosenTermMonthsValue.value / 12 * periodsPerYear
 
-  const repaymentPerPeriod = -1 * PMT(
+  const eachRepayment = -1 * PMT(
     annualRate / periodsPerYear,
     totalPeriods,
     loanAmount.value
   )
 
-  const totalRepayments = repaymentPerPeriod * totalPeriods
-
+  // Fat-marker sketch specified rounding UP the cents
+  // We round up the eachRepayment AFTER we have used it to calculate the total
   return {
-    repaymentPerPeriod,
-    totalRepayments,
+    eachRepayment: Math.ceil(eachRepayment),
+    totalRepayments: Math.ceil(eachRepayment * totalPeriods),
   }
 })
 
@@ -191,9 +193,9 @@ const periodLabel = computed(() => {
           <p class="text-lg text-emerald-600">
             <span
               class="text-xl font-medium tracking-wide"
-              data-test-id="repaymentPerPeriod"
+              data-test-id="eachRepayment"
             >
-              {{ formatCurrency(calculation.repaymentPerPeriod) }}
+              {{ formatCurrency(calculation.eachRepayment) }}
             </span>
             <span class="p-1">
               {{ periodLabel }}
@@ -203,7 +205,7 @@ const periodLabel = computed(() => {
           <p class="text-stone-500">
             <span
               class="font-medium tracking-wide"
-              data-test-id="repaymentsTotal"
+              data-test-id="totalRepayments"
             >
 
               {{ formatCurrency(calculation.totalRepayments) }}

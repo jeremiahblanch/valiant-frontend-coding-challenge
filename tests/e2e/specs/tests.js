@@ -12,7 +12,6 @@ describe('Example test', () => {
   })
 })
 
-// TODO rename component to loanRepaymentCalculator
 describe('LoanRepaymentCalculator', () => {
   beforeEach('visit', () => {
     cy.visit('http://localhost:5173/')
@@ -38,7 +37,7 @@ describe('LoanRepaymentCalculator', () => {
             cy.get('#repaymentPeriodDropdown').select(rp.label)
             cy.get('#termDropdown').select(tm.label)
 
-            const { eachRepayment, total } = getExpectedRepaymentAndTotalValues(
+            const { eachRepayment, totalRepayments } = getExpectedRepaymentAndTotalValues(
               {
                 amount,
                 purposeInput: lp.label,
@@ -47,14 +46,14 @@ describe('LoanRepaymentCalculator', () => {
               }
             )
 
-            cy.extractNumber('[data-test-id="repaymentPerPeriod"]').should(
+            cy.extractNumber('[data-test-id="eachRepayment"]').should(
               'eq',
-              Math.round(eachRepayment)
+              eachRepayment
             )
 
             cy.extractNumber('[data-test-id="repaymentsTotal"]').should(
               'eq',
-              Math.round(total)
+              totalRepayments
             )
           })
         })
@@ -80,9 +79,11 @@ function getExpectedRepaymentAndTotalValues ({
   const periods = (periodsPerYear / 12) * months
 
   const eachRepayment = PMT(rate, periods, amount) * -1
-  const total = eachRepayment * periods
 
-  return { eachRepayment, total }
+  return {
+    eachRepayment: Math.ceil(eachRepayment),
+    totalRepayments: Math.ceil(eachRepayment * periods),
+  }
 }
 
 function findByLabelOrValue (list, searchFor) {

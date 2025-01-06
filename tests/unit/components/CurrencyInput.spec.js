@@ -2,12 +2,12 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
 import { defineComponent } from 'vue'
 import CurrencyInput from '@/components/CurrencyInput.vue'
-import { formatNumber } from '@/utils/formatNumber'
+import formatNumber from '@/utils/formatNumber'
 
 const formatNumberCurrencyAU = (value) => formatNumber(value, { locale: 'en-AU', currency: 'AUD', round: true })
 
 vi.mock('@/composables/useFormat', () => ({
-  useFormat: () => ({
+  default: () => ({
     formatNumber: formatNumberCurrencyAU,
   }),
 }))

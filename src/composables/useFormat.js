@@ -1,9 +1,9 @@
-import { useCurrency } from './useCurrency'
-import { useLocale } from './useLocale'
-import { formatCurrency } from '../utils/formatCurrency'
-import { formatNumber } from '../utils/formatNumber'
+import useCurrency from './useCurrency'
+import useLocale from './useLocale'
+import formatCurrency from '@/utils/formatCurrency'
+import formatNumber from '@/utils/formatNumber'
 
-export function useFormat () {
+function useFormat () {
   const { currency } = useCurrency()
   const { locale } = useLocale()
 
@@ -12,3 +12,5 @@ export function useFormat () {
     formatNumber: (value) => formatNumber(value, { locale, currency, round: true }),
   }
 }
+
+export default useFormat

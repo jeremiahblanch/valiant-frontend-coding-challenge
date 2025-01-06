@@ -1,4 +1,4 @@
-import { limitNumber } from '@/utils/limitNumber'
+import limitNumber from '@/utils/limitNumber'
 
 describe('limitNumber', () => {
   it('given a value below the minimum, returns the minimum', () => expect(limitNumber(1, 2, 3)).toBe(2))

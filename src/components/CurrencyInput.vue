@@ -1,9 +1,9 @@
 <script setup>
 import { nextTick, ref, watch } from 'vue'
 
-import { limitNumber } from '@/utils/limitNumber'
+import limitNumber from '@/utils/limitNumber'
 import { countDigits, findPositionOfNthDigit, isDigit, removeNonDigits } from '@/utils/stringDigits'
-import { useFormat } from '@/composables/useFormat'
+import useFormat from '@/composables/useFormat'
 const { formatNumber } = useFormat()
 
 const emit = defineEmits(['update:modelValue'])

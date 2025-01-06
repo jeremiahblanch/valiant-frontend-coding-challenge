@@ -8,9 +8,7 @@ function findPositionOfNthDigit (str, n) {
   const len = str.length
   let digitCount = 0
   for (let pos = 0; pos < len; pos++) {
-    const c = str.charAt(pos)
-
-    if (isDigit(c)) {
+    if (isDigit(str.charAt(pos))) {
       digitCount++
     }
 
@@ -26,7 +24,9 @@ function isDigit (c) {
   return (rxDigit).test(`${c}`)
 }
 
-function removeNonDigits (str) { return str.split('').filter(isDigit).join('') }
+function removeNonDigits (str) {
+  return str.split('').filter(isDigit).join('')
+}
 
 export {
   countDigits,

@@ -1,4 +1,6 @@
 // TODO - build on this to allow changing of currency
-export function useCurrency () {
+function useCurrency () {
   return { currency: 'AUD' }
 }
+
+export default useCurrency

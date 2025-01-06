@@ -5,8 +5,8 @@ import CurrencyInput from '@/components/CurrencyInput.vue'
 import SelectInput from '@/components/SelectInput.vue'
 import SelectInputSkeleton from '@/components/SelectInputSkeleton.vue'
 
-import { useFormat } from '@/composables/useFormat'
-import { useLoanRepaymentCalculatorConfiguration } from '@/composables/useLoanRepaymentCalculatorConfiguration'
+import useFormat from '@/composables/useFormat'
+import useLoanRepaymentCalculatorConfiguration from '@/composables/useLoanRepaymentCalculatorConfiguration'
 
 import PMT from '@/utils/PMT'
 

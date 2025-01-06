@@ -1,4 +1,4 @@
-import { formatNumber } from '@/utils/formatNumber'
+import formatNumber from '@/utils/formatNumber'
 
 describe('formatNumber', () => {
   const cases = [

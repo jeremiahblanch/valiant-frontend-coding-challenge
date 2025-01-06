@@ -1,4 +1,4 @@
-export function formatCurrency (value, { currency, locale, round }) {
+function formatCurrency (value, { currency, locale, round }) {
   return `${new Intl.NumberFormat(locale, {
     currency,
     currencyDisplay: 'narrowSymbol',
@@ -7,3 +7,5 @@ export function formatCurrency (value, { currency, locale, round }) {
     style: 'currency',
    }).format(value)}`
 }
+
+export default formatCurrency

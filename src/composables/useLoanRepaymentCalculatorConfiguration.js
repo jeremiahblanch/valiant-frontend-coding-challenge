@@ -2,7 +2,7 @@ import axios from 'axios'
 import { onMounted, ref } from 'vue'
 import { ENDPOINT_LOAN_PURPOSES, ENDPOINT_REQUESTED_REPAYMENT_PERIODS, ENDPOINT_REQUESTED_TERM_MONTHS } from '@/constants/endpoints'
 
-export function useLoanAmountConfiguration () {
+export function useLoanRepaymentCalculatorConfiguration () {
   const error = ref('')
   const isLoading = ref(false)
 

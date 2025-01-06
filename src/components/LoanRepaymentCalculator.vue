@@ -4,7 +4,7 @@ import CurrencyInput from '@/components/CurrencyInput.vue'
 import SelectInput from '@/components/SelectInput.vue'
 
 import { useFormat } from '@/composables/useFormat'
-import { useLoanAmountConfiguration } from '@/composables/useLoanAmountConfiguration'
+import { useLoanRepaymentCalculatorConfiguration } from '@/composables/useLoanRepaymentCalculatorConfiguration'
 import PMT from '@/utils/PMT'
 import SelectInputSkeleton from './SelectInputSkeleton.vue'
 
@@ -19,7 +19,7 @@ const {
   loanPurposeOptions,
   repaymentPeriodOptions,
   termMonthsOptions,
-} = useLoanAmountConfiguration()
+} = useLoanRepaymentCalculatorConfiguration()
 
 const props = defineProps({
   loanAmountMax: {

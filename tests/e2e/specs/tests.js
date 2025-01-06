@@ -17,7 +17,7 @@ describe('LoanRepaymentCalculator', () => {
     cy.visit('http://localhost:5173/')
   })
 
-  it('gets a valid result when we pick the first option of each dropdown', () => {
+  it('gets a result when we pick the first option of each dropdown and use the default amount', () => {
     cy.getBySel('loan-purpose-dropdown').select(0)
     cy.getBySel('repayment-period-dropdown').select(0)
     cy.getBySel('term-dropdown').select(0)
@@ -60,6 +60,10 @@ describe('LoanRepaymentCalculator', () => {
       })
     })
   })
+
+  // TODO - tests for invalid amounts
+  // TODO - tests for loading state
+  // TODO - tests for loading errors
 })
 
 function getExpectedRepaymentAndTotalValues ({

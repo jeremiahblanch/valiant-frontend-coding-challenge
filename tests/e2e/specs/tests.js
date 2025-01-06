@@ -40,9 +40,9 @@ describe('LoanRepaymentCalculator', () => {
             const { eachRepayment, totalRepayments } = getExpectedRepaymentAndTotalValues(
               {
                 amount,
-                purposeInput: lp.label,
-                periodInput: rp.label,
-                termInput: tm.label,
+                period: rp.label,
+                purpose: lp.label,
+                term: tm.label,
               }
             )
 
@@ -68,16 +68,16 @@ describe('LoanRepaymentCalculator', () => {
 
 function getExpectedRepaymentAndTotalValues ({
   amount,
-  purposeInput,
-  periodInput,
-  termInput,
+  period,
+  purpose,
+  term,
 }) {
-  const { annualRate } = findByLabelOrValue(loanPurposes, purposeInput)
+  const { annualRate } = findByLabelOrValue(loanPurposes, purpose)
   const { value: periodsPerYear } = findByLabelOrValue(
     repaymentPeriods,
-    periodInput
+    period
   )
-  const { value: months } = findByLabelOrValue(termMonths, termInput)
+  const { value: months } = findByLabelOrValue(termMonths, term)
 
   const rate = annualRate / periodsPerYear
   const periods = (periodsPerYear / 12) * months

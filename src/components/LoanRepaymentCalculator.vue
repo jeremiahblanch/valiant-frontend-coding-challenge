@@ -81,8 +81,8 @@ const periodLabel = computed(() => {
 </script>
 
 <template>
-  <div class="mx-auto flex max-w-xl justify-center">
-    <div class="flex flex-col items-center gap-2 py-6">
+  <div class="mx-1 my-4 flex max-w-xl justify-center rounded-2xl border bg-white shadow-lg sm:mx-auto">
+    <div class="flex flex-col items-center gap-2 pb-2 pt-6">
       <div class="flex flex-col items-center gap-4 font-medium text-stone-700 sm:flex-row sm:flex-wrap sm:justify-center sm:px-6">
         <div :class="styles.fieldRow">
           <label for="loanAmountInput">
@@ -194,9 +194,9 @@ const periodLabel = computed(() => {
         </div>
 
         <template v-else>
-          <p class="text-xl text-emerald-600">
+          <p class="text-lg text-emerald-600 sm:text-xl">
             <span
-              class="text-xl font-semibold tracking-wide"
+              class="font-semibold tracking-wide"
               data-testid="each-repayment"
             >
               {{ formatCurrency(calculation.eachRepayment) }}
@@ -206,7 +206,7 @@ const periodLabel = computed(() => {
               repayments
             </span>
           </p>
-          <p class="text-lg text-stone-500">
+          <p class="text-stone-500 sm:text-lg">
             <span
               class="font-semibold tracking-wide"
               data-testid="total-repayments"

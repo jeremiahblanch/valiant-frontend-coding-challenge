@@ -1,6 +1,6 @@
-import formatNumber from '@/utils/formatNumber'
+import formatValueAsLocaleNumber from '@/utils/formatValueAsLocaleNumber'
 
-describe('formatNumber', () => {
+describe('formatValueAsLocaleNumber', () => {
   const cases = [
     { locale: 'en-AU', value: 0, round: false, expected: '0' },
     { locale: 'en-AU', value: 0, round: true, expected: '0' },
@@ -17,5 +17,5 @@ describe('formatNumber', () => {
     value,
     round,
     expected,
-  }) => expect(formatNumber(value, { locale, round })).toBe(expected))
+  }) => expect(formatValueAsLocaleNumber(value, { locale, round })).toBe(expected))
 })

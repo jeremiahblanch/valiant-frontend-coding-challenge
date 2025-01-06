@@ -1,15 +1,15 @@
 import useCurrency from './useCurrency'
 import useLocale from './useLocale'
-import formatCurrency from '@/utils/formatCurrency'
-import formatNumber from '@/utils/formatNumber'
+import formatValueAsLocaleCurrency from '@/utils/formatValueAsLocaleCurrency'
+import formatValueAsLocaleNumber from '@/utils/formatValueAsLocaleNumber'
 
 function useFormat () {
   const { currency } = useCurrency()
   const { locale } = useLocale()
 
   return {
-    formatCurrency: (value) => formatCurrency(value, { locale, currency, round: true }),
-    formatNumber: (value) => formatNumber(value, { locale, currency, round: true }),
+    formatCurrency: (value) => formatValueAsLocaleCurrency(value, { locale, currency, round: true }),
+    formatNumber: (value) => formatValueAsLocaleNumber(value, { locale, currency, round: true }),
   }
 }
 

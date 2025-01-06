@@ -1,6 +1,6 @@
-import formatCurrency from '@/utils/formatCurrency'
+import formatValueAsLocaleCurrency from '@/utils/formatValueAsLocaleCurrency'
 
-describe('formatCurrency', () => {
+describe('formatValueAsLocaleCurrency', () => {
   const cases = [
     { currency: 'AUD', locale: 'en-AU', value: 0, round: false, expected: '$0.00' },
     { currency: 'AUD', locale: 'en-AU', value: 0, round: true, expected: '$0' },
@@ -22,5 +22,5 @@ describe('formatCurrency', () => {
     value,
     round,
     expected,
-  }) => expect(formatCurrency(value, { currency, locale, round })).toBe(expected))
+  }) => expect(formatValueAsLocaleCurrency(value, { currency, locale, round })).toBe(expected))
 })

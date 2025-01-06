@@ -176,7 +176,10 @@ const periodLabel = computed(() => {
         </div>
       </div>
 
-      <div class="mt-4 flex min-h-24 w-full flex-col items-center justify-center gap-1 border-t px-6 text-center">
+      <div
+        class="mt-4 flex min-h-24 w-full flex-col items-center justify-center gap-1 border-t px-6 text-center"
+        data-test-id="result"
+      >
         <div
           v-if="isLoadingConfig || configError || calculation.error"
           class="text-sm text-stone-400"
@@ -186,7 +189,10 @@ const periodLabel = computed(() => {
 
         <template v-else>
           <p class="text-lg text-emerald-600">
-            <span class="text-xl font-medium tracking-wide">
+            <span
+              class="text-xl font-medium tracking-wide"
+              data-test-id="repaymentPerPeriod"
+            >
               {{ formatCurrency(calculation.repaymentPerPeriod) }}
             </span>
             <span class="p-1">
@@ -195,7 +201,10 @@ const periodLabel = computed(() => {
             </span>
           </p>
           <p class="text-stone-500">
-            <span class="font-medium tracking-wide">
+            <span
+              class="font-medium tracking-wide"
+              data-test-id="repaymentsTotal"
+            >
 
               {{ formatCurrency(calculation.totalRepayments) }}
             </span>

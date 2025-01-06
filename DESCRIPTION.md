@@ -1,5 +1,4 @@
-
-TODOs:
+How I did this.
 1. Make simple loan amount input that when changed recalculates the PMT using constants for the other values.
 2. Fetch the values from the apis and display them on screen
 3. Make select components
@@ -12,6 +11,8 @@ TODOs:
 10. Add loading states and handling for loading errors.
 11. Improve styling taking into consideration different screen sizes.
 12. Re-evaluate structure of app now that all the pieces work. Refactor if necessary.
-13. Write e2e tests.
+13. Write first e2e test.
+14. Write comprehensive e2e tests that go through all the permutations of different options.
+    - involved double checking that I was using PMT correctly by finding existing online loan calculators and entering in the same values and getting the same result.
 14. Do any changes / refactors that become apparant after tests have been created. 
 15. Re-read code looking for consistency or pattens, names and do any refactors necessary.
